@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://unpkg.com/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="app">
+      <h1>Choose Your Starter Pokemon</h1>
+      <button v-on:click="bulbasaur">
+        Bulbasaur
+      </button>
+      <button v-on:click="charmander">Charmander</button>
+      <button v-on:click="squirtle">Squirtle</button>
+      <img alt='sprite' v-bind:src="pokeInfo.sprites.front_shiny"> </img>
+      <p>You Choose {{ pokeInfo.species.name }}</p>
+    </div>
+    <script>
+      var app = new Vue({
+        el: ".app",
+        data: {
+          title: "curtis",
+          num: "1",
+          pokeInfo: "",
+        },
+        methods: {
+          changeTitle: function(event) {
+            this.title = event.target.value;
+          },
+          bulbasaur: function() {
+            this.num = 1;
+            this.axiosCall();
+          },
+          charmander: function() {
+            this.num = 4;
+            this.axiosCall();
+          },
+          squirtle: function() {
+            this.num = 7;
+            this.axiosCall();
+          },
+          axiosCall: function() {
+            axios
+              .get(`https://pokeapi.co/api/v2/pokemon/${this.num}`)
+              .then(response => (this.pokeInfo = response.data))
+              .catch(err => console.log(err));
+          }
+        },
+        mounted() {
+          this.axiosCall();
+        }
+      });
+    </script>
+  </body>
+</html>
